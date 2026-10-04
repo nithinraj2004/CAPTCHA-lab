@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./captcha-lab
+      dockerfile: Dockerfile.backend
+    container_name: captcha-lab-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - CAPTCHA_DB_PATH=/app/data/captcha_lab.db
+      - REDIS_URL=redis://redis:6379/0
+      - RECAPTCHA_SITE_KEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      - RECAPTCHA_SECRET_KEY=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      - GEETEST_ID=test_geetest_id_sandbox
+      - GEETEST_KEY=test_geetest_key_sandbox
+    volumes:
+      - lab-data:/app/data
+    depends_on:
+      - redis
+
+  frontend:
+    build:
+      context: ./captcha-lab/frontend
+      dockerfile: Dockerfile.frontend
+    container_name: captcha-lab-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: captcha-lab-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  lab-data:
+  redis-data:

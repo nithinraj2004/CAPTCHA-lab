@@ -1,0 +1,19 @@
+{
+  "name": "captcha-research-lab",
+  "version": "1.0.0",
+  "description": "Local CAPTCHA research and bot-testing laboratory inspired by GeeTest Adaptive CAPTCHA and Google reCAPTCHA v2",
+  "scripts": {
+    "dev:backend": "python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload --app-dir captcha-lab",
+    "dev:frontend": "npm run dev --prefix captcha-lab/frontend",
+    "dev": "npm run dev:frontend",
+    "test": "python -m pytest captcha-lab/tests -v",
+    "bot": "python -m bot.runner --profile fast",
+    "bot:synthetic": "python -m bot.runner --profile synthetic",
+    "bot:regular": "python -m bot.runner --profile regular",
+    "bot:randomized": "python -m bot.runner --profile randomized",
+    "experiment": "python run_experiment.py"
+  },
+  "keywords": ["captcha", "bot-detection", "biometrics", "telemetry", "security-research", "playwright"],
+  "author": "Security Research Lab",
+  "license": "MIT"
+}
